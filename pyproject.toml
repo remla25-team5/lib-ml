@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools >= 61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lib_ml"
+authors = [
+    {name = "Jorn Dijk", email = "dijkjorn@gmail.com"}
+]
+description = "Preprocessing library for restaurant sentiment analysis."
+version = "0.0.1"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
