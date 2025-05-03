@@ -6,15 +6,11 @@ nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
-import pickle
-
-
-
 
 
 def create_corpus(dataset: pd.DataFrame) -> pd.DataFrame:
     """
-   
+    Cleans text data from the 'Review' column of a DataFrame.
     """
     ps = PorterStemmer()
 
@@ -23,7 +19,7 @@ def create_corpus(dataset: pd.DataFrame) -> pd.DataFrame:
 
     corpus=[]
 
-    for i in range(0, 900):
+    for i in range(0, len(dataset)):
         review = re.sub('[^a-zA-Z]', ' ', dataset['Review'][i])
         review = review.lower()
         review = review.split()
