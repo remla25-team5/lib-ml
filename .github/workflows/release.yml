@@ -21,6 +21,7 @@ jobs:
         run: |
           VERSION=${GITHUB_REF:11}
           MAJOR=$(echo "$VERSION" | cut -d . -f 1)
+          MAJOR=${MAJOR#v}
           MINOR=$(echo "$VERSION" | cut -d . -f 2)
           PATCH=$(echo "$VERSION" | cut -d . -f 3)
           echo "version=$VERSION" >> $GITHUB_ENV
