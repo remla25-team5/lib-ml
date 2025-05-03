@@ -28,6 +28,7 @@ jobs:
           echo "version_minor=$MINOR" >> $GITHUB_ENV
           echo "version_patch=$PATCH" >> $GITHUB_ENV
           FINAL_VERSION="${MAJOR}.${MINOR}.${PATCH}"
+          
       - name: Check if tag is on main branch history
         run: |
           echo "Checking if tag ${{ github.ref_name }} (commit $GITHUB_SHA) is on the main branch..."
