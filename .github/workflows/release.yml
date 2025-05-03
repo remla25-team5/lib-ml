@@ -1,14 +1,16 @@
-name: Release lib-ml Package to GitHub Packages
+name: Release lib-ml
 
-on: push
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*' 
 
 permissions:
   contents: write
-  packages: write 
 
 jobs: 
-  build:
-    name: Build Package Check
+  tag_check_and_release_entry:
+    name: Check Tag and Create Release Entry
     runs-on: ubuntu-latest
 
     steps:
@@ -17,26 +19,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      # - name: Check if tag is on main branch history
+      #   run: |
+      #     echo "Checking if tag ${{ github.ref_name }} (commit $GITHUB_SHA) is on the main branch..."
+      #     git fetch origin main:refs/remotes/origin/main
+      #     if git merge-base --is-ancestor $GITHUB_SHA origin/main; then
+      #       echo "Tag ${{ github.ref_name }} is on the main branch history. Acknowledged as release point."
+      #     else
+      #       echo "Tag ${{ github.ref_name }} is NOT on the main branch history. Ignoring tag."
+      #       exit 1
+      #     fi
+      #   shell: bash
+
+      - name: Create GitHub Release Page Entry
+        uses: softprops/action-gh-release@v2
         with:
-          python-version: '3.13'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install build
-          pip install twine
-
-
-      - name: Build package
-        run: |
-          python -m build
-
-      - name: Publish package to GitHub Packages
-        env:
-          TWINE_USERNAME: __token__ 
-          TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }} 
-        run: |
-          python -m twine upload --repository-url https://pypi.pkg.github.com/${{ github.repository_owner }} dist/*
-        
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            Release of version ${{ github.ref_name }} for lib-ml.
+    
+            **Installation:**
+            This package is installed directly from the Git tag. Use pip:
+            ```bash
+            pip install git+https://github.com/${{ github.repository_owner }}/lib-ml.git@${{ github.ref_name }}#egg=lib-ml
