@@ -72,8 +72,9 @@ jobs:
              **Installation:**
             Download the `.whl` file from the assets below and install using pip:
             ```bash
-            pip install https://github.com/${{ github.repository }}/releases/download/${{ github.final_version }}/${{ env.wheel_filename }}
+            pip install https://github.com/${{ github.repository }}/releases/download/${{ env.final_version }}/${{ env.wheel_filename }}
             ```
+            or add it to your requirements.txt
           files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
