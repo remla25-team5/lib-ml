@@ -58,7 +58,6 @@ jobs:
         with:
           tag_name: ${{ env.final_version }}
           name: Release ${{ github.ref_name }}
-          files: dist/*
           body: |
             Release of version ${{ github.ref_name }} for lib-ml.
     
