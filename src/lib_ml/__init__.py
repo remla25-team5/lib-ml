@@ -1,5 +1,4 @@
 from .preprocessing import create_corpus, transform_data, preprocessing
-from .placeholder import test_package
 
 try:
     from ._version import version as __version__
