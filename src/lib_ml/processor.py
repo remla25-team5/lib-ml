@@ -52,5 +52,5 @@ class RestaurantSentimentPreprocessor(BaseEstimator, TransformerMixin):
 
         corpus = create_corpus(X)
 
-        X_transformed = self.cv_.transform(corpus).toarray()
+        X_transformed = self.cv_.fit_transform(corpus).toarray()
         return X_transformed
