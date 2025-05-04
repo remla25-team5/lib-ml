@@ -8,7 +8,7 @@ from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 
 
-def create_corpus(dataset: pd.DataFrame) -> pd.DataFrame:
+def create_corpus(dataset: pd.DataFrame) -> list:
     """
     Cleans text data from the 'Review' column of a DataFrame.
     """
