@@ -8,7 +8,6 @@ This library is installed directly from its GitHub repository using release tags
 
 **Option 1: Direct pip install**
 
-Add the following line to your project's `requirements.txt`. Replace `<tag>` with the specific release tag you want to use (like `v0.1.0`):
 Install the library directly using pip:
 
 ```bash
