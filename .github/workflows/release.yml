@@ -43,16 +43,15 @@ jobs:
       #     fi
       #   shell: bash
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
       - name: Build wheel / sdist
         run: |
           python -m pip install --upgrade pip build  
           python -m build  
-
-      - name: Upload build as workflow artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: lib-ml-${{ env.final_version }}
-          path: dist/*
 
       - name: Create GitHub Release Page Entry
         uses: softprops/action-gh-release@v2
@@ -63,7 +62,15 @@ jobs:
           body: |
             Release of version ${{ github.ref_name }} for lib-ml.
     
-            **Installation:**
-            This package is installed directly from the Git tag. Use pip:
+             **Installation:**
+            Download the `.whl` file from the assets below and install using pip:
             ```bash
-            pip install git+https://github.com/${{ github.repository_owner }}/lib-ml.git@${{ github.ref_name }}#egg=lib-ml
+            pip install <filename>.whl
+            ```
+            Alternatively, install the source distribution:
+            ```bash
+            pip install <filename>.tar.gz
+            ```
+          files: dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
