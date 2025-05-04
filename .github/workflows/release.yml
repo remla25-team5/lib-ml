@@ -52,6 +52,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip build  
           python -m build  
+        
+      - name: Get Artifact Filenames
+        id: get_filenames
+        run: |
+          WHEEL_FILE=$(ls dist/*.whl | head -n 1)
+          WHEEL_FILENAME=$(basename $WHEEL_FILE)
+          echo "Found wheel file: $WHEEL_FILENAME"
+          echo "wheel_filename=$WHEEL_FILENAME" >> $GITHUB_ENV
 
       - name: Create GitHub Release Page Entry
         uses: softprops/action-gh-release@v2
@@ -64,11 +72,7 @@ jobs:
              **Installation:**
             Download the `.whl` file from the assets below and install using pip:
             ```bash
-            pip install <filename>.whl
-            ```
-            Alternatively, install the source distribution:
-            ```bash
-            pip install <filename>.tar.gz
+            pip install https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/${{ env.wheel_filename }}
             ```
           files: dist/*
         env:
