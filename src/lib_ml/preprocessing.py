@@ -7,6 +7,18 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 
+def separate_features_labels(dataset: pd.DataFrame, feature_column: str = 'Review', label_column: str = 'Liked') -> tuple:
+    """
+    Separates features and labels from a DataFrame.
+    """
+    if feature_column not in dataset.columns:
+        raise ValueError(f"Feature column '{feature_column}' not found in DataFrame.")
+    if label_column not in dataset.columns:
+        raise ValueError(f"Label column '{label_column}' not found in DataFrame.")
+
+    X = dataset[feature_column]
+    y = dataset[label_column]
+    return X, y
 
 def create_corpus(dataset: pd.DataFrame) -> list:
     """

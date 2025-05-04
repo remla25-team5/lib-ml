@@ -1,4 +1,4 @@
-from .preprocessing import create_corpus, transform_data, preprocessing
+from .preprocessing import create_corpus, transform_data, preprocessing, separate_features_labels
 from .processor import RestaurantSentimentPreprocessor
 
 try:
@@ -7,4 +7,4 @@ except ImportError:
     __version__ = "0.0.0" 
 
 
-__all__ = ['__version__', 'create_corpus', 'transform_data', 'preprocessing', 'RestaurantSentimentPreprocessor']
+__all__ = ['__version__', 'create_corpus', 'transform_data', 'preprocessing', 'separate_features_labels', 'RestaurantSentimentPreprocessor']
