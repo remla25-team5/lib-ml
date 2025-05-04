@@ -6,17 +6,21 @@ A Python library providing text preprocessing functions specifically for the Res
 
 This library is installed directly from its GitHub repository using release tags (e.g., `v0.1.0`).
 
-**Option 1: Add to requirements.txt**
+**Option 1: Direct pip install**
 
 Add the following line to your project's `requirements.txt`. Replace `<tag>` with the specific release tag you want to use (like `v0.1.0`):
+Install the library directly using pip:
 
-```txt
-# In requirements.txt
-lib-ml @ git+https://github.com/remla25-team5/lib-ml.git@<tag>
+```bash
+pip install https://github.com/remla25-team5/releases/download/\<version\>/\<wheel-filename\>
 ```
+
 Then install dependencies: pip install -r requirements.txt
 
-**Option 2: Direct pip install**
+**Option 2: Add to requirements**
 
-Alternatively, install directly using pip:
-`pip install git+https://github.com/remla25-team5/lib-ml.git@<tag>`
+Add the following line to your project's `requirements.txt`. Replace `<tag>` with the specific release version you want to use (like `v0.1.0`):
+
+```txt
+lib-ml @ https://github.com/remla25-team5/releases/download/<version>/<wheel-filename>
+```
