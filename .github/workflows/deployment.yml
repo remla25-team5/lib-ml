@@ -49,15 +49,15 @@ jobs:
       - name: Create GitHub Release Page Entry
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.bump_version.new_version }}
-          name: Release ${{ steps.bump_version.new_version}}
+          tag_name: ${{ steps.bump_version.outputs.new_tag  }}
+          name: Release ${{ steps.bump_version.outputs.new_tag}}
           body: |
-            Release of version ${{ steps.bump_version.new_version }} for lib-ml.
+            Release of version ${{ steps.bump_version.outputs.new_tag }} for lib-ml.
     
              **Installation:**
             Download the `.whl` file from the assets below and install using pip:
             ```bash
-            pip install https://github.com/${{ github.repository }}/releases/download/${{ steps.bump_version.new_version }}/${{ env.wheel_filename }}
+            pip install https://github.com/${{ github.repository }}/releases/download/${{ steps.bump_version.outputs.new_tag }}/${{ env.wheel_filename }}
             ```
             or add it to your requirements.txt
           files: dist/*
