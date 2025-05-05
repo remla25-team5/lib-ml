@@ -26,7 +26,3 @@ jobs:
           default_prerelease_bump: patch
           append_to_pre_release_tag: pre
           tag_prefix: v
-      
-      - name: Output new tag
-        if: steps.bump_version.outputs.new_tag
-        run: echo "Successfully tagged: ${{ steps.bump_version.outputs.new_tag }}"
