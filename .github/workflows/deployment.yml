@@ -1,12 +1,12 @@
 name: Lib-ml Deployment
 
-on:
-  workflow_dispatch:
-    inputs:
-      tag_to_release:
-        description: 'Optional: Specify the exact pre-release tag to promote (e.g., v1.2.3-pre.5). Leave blank to auto-detect latest.'
-        required: false
-        default: ''
+on: push
+  # workflow_dispatch:
+  #   inputs:
+  #     tag_to_release:
+  #       description: 'Optional: Specify the exact pre-release tag to promote (e.g., v1.2.3-pre.5). Leave blank to auto-detect latest.'
+  #       required: false
+  #       default: ''
 
 jobs:
   delivery:
@@ -24,7 +24,7 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          release_branches: 'main'
+          release_branches: '.*'
           pre_release_branches: 'NONE'
           tag_prefix: v
 
