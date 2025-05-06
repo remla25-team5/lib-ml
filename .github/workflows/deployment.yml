@@ -1,0 +1,81 @@
+name: Lib-ml Deployment
+
+on: 
+  workflow_dispatch:
+    inputs:
+      bump_level:
+        description: 'Specify the type of version bump for the new release.'
+        required: false
+        type: choice 
+        options:   
+          - patch
+          - minor
+          - major
+        default: 'patch' 
+
+jobs:
+  delivery:
+    name: Deployment
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Bump stable version and push tag
+        id: bump_version
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+          pre_release_branches: 'NONE'
+          default_bump: ${{ inputs.bump_level }}
+          tag_prefix: v
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Build wheel / sdist
+        run: |
+          python -m pip install --upgrade pip build  
+          python -m build  
+        
+      - name: Get Artifact Filenames
+        id: get_filenames
+        run: |
+          WHEEL_FILE=$(ls dist/*.whl | head -n 1)
+          WHEEL_FILENAME=$(basename $WHEEL_FILE)
+          echo "Found wheel file: $WHEEL_FILENAME"
+          echo "wheel_filename=$WHEEL_FILENAME" >> $GITHUB_ENV
+
+      - name: Create GitHub Release Page Entry
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.bump_version.outputs.new_tag  }}
+          name: Release ${{ steps.bump_version.outputs.new_tag}}
+          body: |
+            Release of version ${{ steps.bump_version.outputs.new_tag }} for lib-ml.
+    
+             **Installation:**
+            Download the `.whl` file from the assets below and install using pip:
+            ```bash
+            pip install https://github.com/${{ github.repository }}/releases/download/${{ steps.bump_version.outputs.new_tag }}/${{ env.wheel_filename }}
+            ```
+            or add it to your requirements.txt
+          files: dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add new pre release
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: 'NONE'
+          pre_release_branches: main
+          default_prerelease_bump: prerelease
+          append_to_pre_release_tag: pre
+          tag_prefix: v
