@@ -29,13 +29,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create empty commit for stable release
-        run: |
-          git commit --allow-empty -m "Empty commit for stable release [skip ci]"
-          git push
-          COMMIT_SHA=$(git rev-parse HEAD)
-          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
-          echo "Created release commit with SHA: $COMMIT_SHA"
+      # - name: Create empty commit for stable release
+      #   run: |
+      #     git commit --allow-empty -m "Empty commit for stable release [skip ci]"
+      #     git push
+      #     COMMIT_SHA=$(git rev-parse HEAD)
+      #     echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+      #     echo "Created release commit with SHA: $COMMIT_SHA"
 
       - name: Bump stable version and push tag
         id: bump_version
@@ -43,12 +43,22 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # release_branches: main
+          dry-run: true
           release_branches: ${{ github.ref_name }}
-          commit_sha: ${{ steps.create_release_commit.outputs.commit_sha }}
           pre_release_branches: 'NONE'
           # default_bump: ${{ inputs.bump_level }}
           default_bump: patch
           tag_prefix: v
+      
+      - name: Create release commit and tag
+        id: create_release
+        run: |
+          NEW_TAG=${{ steps.bump_version.outputs.new_tag }}
+
+          git commit --allow-empty -m "Release ${NEW_TAG} [skip ci]"
+          git tag $NEW_TAG
+          git push origin HEAD --tags
+          echo "new_tag=${NEW_TAG}" >> $GITHUB_OUTPUT
 
       - name: Checkout code at release commit
         uses: actions/checkout@v4
