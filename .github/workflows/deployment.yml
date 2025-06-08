@@ -54,14 +54,10 @@ jobs:
         id: create_release
         run: |
           NEW_TAG=${{ steps.bump_version.outputs.new_tag }}
-
           git commit --allow-empty -m "Release ${NEW_TAG} [skip ci]"
           git tag $NEW_TAG
           git push origin HEAD --tags
           echo "new_tag=${NEW_TAG}" >> $GITHUB_OUTPUT
-
-      - name: Checkout code at release commit
-        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -98,10 +94,10 @@ jobs:
           files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
 
       - name: Create empty commit for next pre-release
         run: |
+          git pull
           git commit --allow-empty -m "Empty commit for next pre-release"
           git push
 
