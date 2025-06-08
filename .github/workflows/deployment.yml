@@ -99,14 +99,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Checkout branch head to prepare for trigger
-        uses: actions/checkout@v4
 
       - name: Create empty commit for next pre-release
         run: |
-          git pull
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git commit --allow-empty -m "Empty commit for next pre-release"
           git push
 
