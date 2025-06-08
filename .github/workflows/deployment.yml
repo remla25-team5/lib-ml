@@ -42,7 +42,8 @@ jobs:
           # release_branches: main
           release_branches: ${{ github.ref_name }}
           pre_release_branches: 'NONE'
-          default_bump: ${{ inputs.bump_level }}
+          # default_bump: ${{ inputs.bump_level }}
+          default_bump: patch
           tag_prefix: v
 
       - name: Checkout code at release commit
