@@ -24,15 +24,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+      # - name: Configure Git
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create empty commit for stable release
-        run: |
-          git commit --allow-empty -m "Empty commit for stable release [skip ci]"
-          git push
+      # - name: Create empty commit for stable release
+      #   run: |
+      #     git commit --allow-empty -m "Empty commit for stable release [skip ci]"
+      #     git push
 
       - name: Bump stable version and push tag
         id: bump_version
@@ -44,9 +44,12 @@ jobs:
           # default_bump: ${{ inputs.bump_level }}
           default_bump: patch
           tag_prefix: v
+          custom_message: "Create empty commit for stable release [skip ci]"
 
       - name: Checkout code at release commit
         uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.bump_version.outputs.new_tag }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
