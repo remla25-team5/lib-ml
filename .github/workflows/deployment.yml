@@ -33,7 +33,9 @@ jobs:
         run: |
           git commit --allow-empty -m "Empty commit for stable release [skip ci]"
           git push
-          git pull
+          COMMIT_SHA=$(git rev-parse HEAD)
+          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "Created release commit with SHA: $COMMIT_SHA"
 
       - name: Bump stable version and push tag
         id: bump_version
@@ -42,6 +44,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # release_branches: main
           release_branches: ${{ github.ref_name }}
+          commit_sha: ${{ steps.create_release_commit.outputs.commit_sha }}
           pre_release_branches: 'NONE'
           # default_bump: ${{ inputs.bump_level }}
           default_bump: patch
