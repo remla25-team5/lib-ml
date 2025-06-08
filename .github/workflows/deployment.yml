@@ -85,8 +85,25 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create empty commit for next pre-release
+      - name: Add new pre release
+        id: bump_prerelease
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: 'NONE'
+          pre_release_branches: main
+          dry_run: true
+          default_prerelease_bump: prerelease
+          append_to_pre_release_tag: pre
+          tag_prefix: v
+
+      - name: Create release commit and tag
+        id: create_release
         run: |
           git pull
-          git commit --allow-empty -m "Empty commit for next pre-release"
-          git push
+          NEW_TAG=${{ steps.bump_prerelease.outputs.new_tag }}
+          git commit --allow-empty -m "Release ${NEW_TAG} [skip ci]"
+          git tag $NEW_TAG
+          git push origin HEAD --tags
+
+      
