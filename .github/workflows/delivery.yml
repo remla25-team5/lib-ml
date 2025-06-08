@@ -1,6 +1,6 @@
 name: Lib-ml Delivery
 
-on:
+on: 
   push:
     branches:
       - main
